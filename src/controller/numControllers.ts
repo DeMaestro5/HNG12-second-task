@@ -8,6 +8,7 @@ export class NumController {
     try {
       const numberStr = req.query.number;
 
+      // Input validation
       if (!numberStr || Array.isArray(numberStr)) {
         res.status(400).json({
           number: numberStr || 'missing',
@@ -16,9 +17,15 @@ export class NumController {
         return;
       }
 
-      const number = parseInt(numberStr as string);
+      // Convert to number and check if it's a valid integer
+      const number = Number(numberStr);
 
-      if (isNaN(number) || !Number.isInteger(number)) {
+      // Check if the number is a valid integer
+      if (
+        !Number.isInteger(number) ||
+        isNaN(number) ||
+        number.toString().includes('.')
+      ) {
         res.status(400).json({
           number: numberStr,
           error: true,
@@ -26,27 +33,20 @@ export class NumController {
         return;
       }
 
-      const [funFact, isPrime, isPerfect, properties, digitSum] =
-        await Promise.all([
-          NumApi.getFunFact(number),
-          Promise.resolve(NumUtils.isPrime(number)),
-          Promise.resolve(NumUtils.isPerfect(number)),
-          Promise.resolve(NumUtils.getProperties(number)),
-          Promise.resolve(NumUtils.getDigitSum(number)),
-        ]);
+      const funFact = await NumApi.getFunFact(number);
 
       const response: NumberResponse = {
         number,
-        is_prime: isPrime,
-        is_perfect: isPerfect,
-        properties,
-        digit_sum: digitSum,
+        is_prime: NumUtils.isPrime(number),
+        is_perfect: NumUtils.isPerfect(number),
+        properties: NumUtils.getProperties(number),
+        digit_sum: NumUtils.getDigitSum(number),
         fun_fact: funFact,
       };
 
       res.json(response);
     } catch (error) {
-      res.status(500).json({
+      res.status(400).json({
         number: req.query.number || 'unknown',
         error: true,
       } as ErrorResponse);
