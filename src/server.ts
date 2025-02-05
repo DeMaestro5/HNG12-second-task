@@ -1,25 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import numRoutes from './routes';
+import app from './app';
 
-const app = express();
+const PORT = process.env.PORT || 8888;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Routes
-app.use('/api', numRoutes);
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-export default app;
