@@ -8,7 +8,6 @@ export class NumController {
     try {
       const numberStr = req.query.number;
 
-      // Input validation
       if (!numberStr || Array.isArray(numberStr)) {
         res.status(400).json({
           number: numberStr || 'missing',
@@ -26,9 +25,6 @@ export class NumController {
         } as ErrorResponse);
         return;
       }
-
-      // Start cache warming for next batch of numbers in background
-      NumApi.warmupCache(number + 1).catch(() => {});
 
       const [funFact, isPrime, isPerfect, properties, digitSum] =
         await Promise.all([

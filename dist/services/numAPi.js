@@ -15,7 +15,7 @@ class NumApi {
         }
         try {
             const response = await axios_1.default.get(`${this.BASE_URL}/${num}/math`, {
-                timeout: 2000, // 2 second timeout
+                timeout: 2000,
             });
             const fact = response.data;
             numCache_1.NumCache.set(cacheKey, fact);
@@ -35,20 +35,6 @@ class NumApi {
             `${num} is a ${num > 0 ? 'positive' : 'negative'} number`,
         ];
         return facts[Math.floor(Math.random() * facts.length)];
-    }
-    // Background cache warming
-    static async warmupCache(startNum = 1) {
-        if (this.isWarmingUp)
-            return;
-        this.isWarmingUp = true;
-        try {
-            const numbers = Array.from({ length: this.BATCH_SIZE }, (_, i) => startNum + i);
-            const promises = numbers.map((num) => this.getFunFact(num));
-            await Promise.allSettled(promises);
-        }
-        finally {
-            this.isWarmingUp = false;
-        }
     }
 }
 exports.NumApi = NumApi;

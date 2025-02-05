@@ -11,7 +11,6 @@ export class NumUtils {
   }
 
   static isPerfect(num: number): boolean {
-    if (num <= 1) return false;
     let sum = 1;
     for (let i = 2; i * i <= num; i++) {
       if (num % i === 0) {
@@ -21,33 +20,24 @@ export class NumUtils {
         }
       }
     }
-    return sum === num;
-  }
-
-  static isArmstrong(num: number): boolean {
-    const digits = num.toString().split('').map(Number);
-    const power = digits.length;
-    const sum = digits.reduce((acc, digit) => acc + Math.pow(digit, power), 0);
-    return sum === num;
+    return sum === num && num !== 1;
   }
 
   static getDigitSum(num: number): number {
-    return num
+    return Math.abs(num)
       .toString()
       .split('')
-      .map(Number)
-      .reduce((acc, digit) => acc + digit, 0);
+      .reduce((sum, digit) => sum + parseInt(digit), 0);
   }
 
   static getProperties(num: number): string[] {
-    const properties: string[] = [];
-
-    if (this.isArmstrong(num)) {
-      properties.push('armstrong');
-    }
-
-    properties.push(num % 2 === 0 ? 'even' : 'odd');
-
+    const properties = [];
+    if (num % 2 === 0) properties.push('even');
+    else properties.push('odd');
+    if (num > 0) properties.push('positive');
+    else if (num < 0) properties.push('negative');
+    else properties.push('zero');
+    if (Number.isInteger(Math.sqrt(num))) properties.push('perfect square');
     return properties;
   }
 }

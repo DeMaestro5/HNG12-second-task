@@ -9,5 +9,5 @@ export interface NumberResponse {
 
 export interface ErrorResponse {
   number: string | number;
-  error: boolean;
+  error: true;
 }

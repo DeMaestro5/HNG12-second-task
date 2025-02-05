@@ -7,7 +7,6 @@ class NumController {
     static async classifyNumber(req, res) {
         try {
             const numberStr = req.query.number;
-            // Input validation
             if (!numberStr || Array.isArray(numberStr)) {
                 res.status(400).json({
                     number: numberStr || 'missing',
@@ -23,8 +22,6 @@ class NumController {
                 });
                 return;
             }
-            // Start cache warming for next batch of numbers in background
-            numAPi_1.NumApi.warmupCache(number + 1).catch(() => { });
             const [funFact, isPrime, isPerfect, properties, digitSum] = await Promise.all([
                 numAPi_1.NumApi.getFunFact(number),
                 Promise.resolve(numUtils_1.NumUtils.isPrime(number)),
