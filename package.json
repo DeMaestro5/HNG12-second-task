@@ -2,12 +2,12 @@
   "name": "number-classifier-api",
   "version": "1.0.0",
   "description": "API for classifying numbers and providing mathematical properties",
-  "main": "dist/server.js",
+  "main": "index.js",
   "engines": {
     "node": "18.x"
   },
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node index.js",
     "dev": "ts-node-dev --respawn src/server.ts",
     "build": "tsc",
     "postinstall": "npm run build"

@@ -3,7 +3,7 @@ services:
     name: number-classifier-api
     env: node
     buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    startCommand: node index.js
     envVars:
       - key: NODE_ENV
         value: production
