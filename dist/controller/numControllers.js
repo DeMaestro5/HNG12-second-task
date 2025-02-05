@@ -23,13 +23,21 @@ class NumController {
                 });
                 return;
             }
-            const funFact = await numAPi_1.NumApi.getFunFact(number);
+            // Start cache warming for next batch of numbers in background
+            numAPi_1.NumApi.warmupCache(number + 1).catch(() => { });
+            const [funFact, isPrime, isPerfect, properties, digitSum] = await Promise.all([
+                numAPi_1.NumApi.getFunFact(number),
+                Promise.resolve(numUtils_1.NumUtils.isPrime(number)),
+                Promise.resolve(numUtils_1.NumUtils.isPerfect(number)),
+                Promise.resolve(numUtils_1.NumUtils.getProperties(number)),
+                Promise.resolve(numUtils_1.NumUtils.getDigitSum(number)),
+            ]);
             const response = {
                 number,
-                is_prime: numUtils_1.NumUtils.isPrime(number),
-                is_perfect: numUtils_1.NumUtils.isPerfect(number),
-                properties: numUtils_1.NumUtils.getProperties(number),
-                digit_sum: numUtils_1.NumUtils.getDigitSum(number),
+                is_prime: isPrime,
+                is_perfect: isPerfect,
+                properties,
+                digit_sum: digitSum,
                 fun_fact: funFact,
             };
             res.json(response);

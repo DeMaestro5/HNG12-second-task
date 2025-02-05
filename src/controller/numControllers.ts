@@ -27,14 +27,24 @@ export class NumController {
         return;
       }
 
-      const funFact = await NumApi.getFunFact(number);
+      // Start cache warming for next batch of numbers in background
+      NumApi.warmupCache(number + 1).catch(() => {});
+
+      const [funFact, isPrime, isPerfect, properties, digitSum] =
+        await Promise.all([
+          NumApi.getFunFact(number),
+          Promise.resolve(NumUtils.isPrime(number)),
+          Promise.resolve(NumUtils.isPerfect(number)),
+          Promise.resolve(NumUtils.getProperties(number)),
+          Promise.resolve(NumUtils.getDigitSum(number)),
+        ]);
 
       const response: NumberResponse = {
         number,
-        is_prime: NumUtils.isPrime(number),
-        is_perfect: NumUtils.isPerfect(number),
-        properties: NumUtils.getProperties(number),
-        digit_sum: NumUtils.getDigitSum(number),
+        is_prime: isPrime,
+        is_perfect: isPerfect,
+        properties,
+        digit_sum: digitSum,
         fun_fact: funFact,
       };
 
