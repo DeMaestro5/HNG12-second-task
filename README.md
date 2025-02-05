@@ -38,8 +38,7 @@ number-classifier-api/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/number-classifier-api.git
-cd number-classifier-api
+git clone https://github.com/DeMaestro5/HNG12-second-task
 ```
 
 2. Install dependencies:
