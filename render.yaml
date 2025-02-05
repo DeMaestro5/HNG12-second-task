@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: number-classifier-api
+    name: number-classifier
     env: node
     buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
