@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "API for classifying numbers and providing mathematical properties",
   "main": "dist/server.js",
+  "type": "commonjs",
   "engines": {
-    "node": ">=14.0.0"
+    "node": "18.x"
   },
   "scripts": {
     "start": "node dist/server.js",
